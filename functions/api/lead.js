@@ -3,9 +3,9 @@
 //
 // Bindings / settings (wrangler.toml + Pages secrets):
 //   DB              D1 database "loveall-leads"
-//   LEAD_TO         tloveall10@gmail.com
+//   LEAD_TO         leads@beinsight.co before launch; tloveall10@gmail.com after
 //   LEAD_FROM       Loveall Website Leads <leads@beinsight.co>
-//   LEAD_BCC        leads@beinsight.co
+//   LEAD_BCC        leads@beinsight.co (skipped when it equals LEAD_TO)
 //   RESEND_API_KEY  secret, set with `wrangler pages secret put RESEND_API_KEY`
 
 const LIMITS = { name: 80, phone: 40, location: 200, service: 80, issue: 2000, urgency: 40, bestTime: 120 };
@@ -81,6 +81,7 @@ export const onRequest = () => json({ ok: false, error: "method_not_allowed" }, 
 
 async function sendEmail(env, id, source, lead, transcript) {
   if (!env.RESEND_API_KEY) return { ok: false, error: "RESEND_API_KEY not set" };
+  if (!env.LEAD_TO || !env.LEAD_FROM) return { ok: false, error: "LEAD_TO / LEAD_FROM not set" };
   const label = source === "chat" ? "Chat" : "Quote form";
   const rows = [
     ["Name", lead.name], ["Phone", lead.phone], ["Location", lead.location], ["Service", lead.service],
@@ -109,7 +110,7 @@ ${transcript && transcript.length ? `<h3 style="margin:24px 0 8px">Chat conversa
       body: JSON.stringify({
         from: env.LEAD_FROM,
         to: [env.LEAD_TO],
-        bcc: [env.LEAD_BCC],
+        ...(env.LEAD_BCC && env.LEAD_BCC.toLowerCase() !== env.LEAD_TO.toLowerCase() ? { bcc: [env.LEAD_BCC] } : {}),
         subject: `New lead: ${lead.name}${lead.service ? " – " + lead.service : ""}${lead.urgency === "emergency" ? " (EMERGENCY)" : ""}`,
         html, text,
       }),

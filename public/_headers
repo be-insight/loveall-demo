@@ -1,0 +1,4 @@
+# Private preview: keep every response out of search engines, including
+# non-HTML files and the *.pages.dev preview URLs. Remove at launch (LAUNCH.md).
+/*
+  X-Robots-Tag: noindex, nofollow

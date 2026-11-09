@@ -1,11 +1,15 @@
-# Cloudflare Pages project for loveall.beinsight.co
+# Cloudflare Pages project. Private preview: https://loveall-demo.pages.dev
+# Final domain at launch: loveallplumbing.com (see LAUNCH.md)
 name = "loveall-demo"
 pages_build_output_dir = "public"
 compatibility_date = "2026-11-01"
 
 [vars]
-LEAD_TO = "tloveall10@gmail.com"
+# Who receives lead emails. PRE-LAUNCH: Insight only.
+# At launch (see LAUNCH.md), change this one line to "tloveall10@gmail.com".
+LEAD_TO = "leads@beinsight.co"
 LEAD_FROM = "Loveall Website Leads <leads@beinsight.co>"
+# Insight's copy of every lead. Skipped automatically while LEAD_TO is the same address.
 LEAD_BCC = "leads@beinsight.co"
 # RESEND_API_KEY is a secret: npx wrangler pages secret put RESEND_API_KEY --project-name loveall-demo
 
