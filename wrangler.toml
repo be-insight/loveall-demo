@@ -1,0 +1,16 @@
+# Cloudflare Pages project for loveall.beinsight.co
+name = "loveall-demo"
+pages_build_output_dir = "public"
+compatibility_date = "2026-11-01"
+
+[vars]
+LEAD_TO = "tloveall10@gmail.com"
+LEAD_FROM = "Loveall Website Leads <leads@beinsight.co>"
+LEAD_BCC = "leads@beinsight.co"
+# RESEND_API_KEY is a secret: npx wrangler pages secret put RESEND_API_KEY --project-name loveall-demo
+
+[[d1_databases]]
+binding = "DB"
+database_name = "loveall-leads"
+database_id = "e87579d9-4741-403d-8c20-427257604704"
+migrations_dir = "migrations"

@@ -16,7 +16,7 @@ removed only when --launch is passed and no blanks remain.
 """
 import json, re, sys, pathlib, html as htmlmod
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent / "public"
 PAGES = ["index.html", "privacy.html", "terms.html", "accessibility.html"]
 
 def main():

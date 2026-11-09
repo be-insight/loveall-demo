@@ -834,6 +834,7 @@ form.quote { background: var(--white); border: 1px solid var(--line); border-rad
           </select>
         </div>
         <div class="field"><label for="q-msg">What's going on?</label><textarea id="q-msg" placeholder="Describe the problem, and where it is in the house"></textarea></div>
+        <div class="sr" aria-hidden="true"><label for="q-website">Leave this empty</label><input id="q-website" tabindex="-1" autocomplete="off"></div>
         <p class="consent" id="consent">By sending this, you agree that Loveall Plumbing may call or text you at this number about your request. Consent isn't a condition of buying anything. Message and data rates may apply; reply STOP to end texts. See our <a href="privacy.html">Privacy Policy</a>.</p>
         <button class="btn btn-copper" type="submit" aria-describedby="consent">Request my quote</button>
         <p class="form-msg" id="form-msg" aria-live="polite"></p>
@@ -910,7 +911,7 @@ form.quote { background: var(--white); border: 1px solid var(--line); border-rad
     <input id="chat-in" autocomplete="off" placeholder="Type your message">
     <button type="submit" id="chat-send">Send</button>
   </form>
-  <p class="chat-note">Demo: leads go to a preview card, not to a real phone. <a href="privacy.html#chat">How the chat handles your info</a></p>
+  <p class="chat-note">Your details go straight to the Loveall team. <a href="privacy.html#chat">How the chat handles your info</a></p>
 </div>
 
 <script>
@@ -1052,12 +1053,28 @@ Only output LEAD_JSON once in the conversation.`;
   }
   const clearChips = () => log.querySelectorAll(".chips").forEach(c => c.remove());
 
+  /* ---------- Lead delivery: POST /api/lead (saved in D1, emailed to Loveall) ---------- */
+  const loadedAt = Date.now();
+  async function postLead(payload) {
+    const r = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...payload, elapsedMs: Date.now() - loadedAt })
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.ok) throw new Error(data.error || "send_failed");
+    return data;
+  }
+  const chatTranscript = () => Array.from(log.querySelectorAll(".msg"))
+    .filter(el => !el.classList.contains("typing") && el.textContent.trim())
+    .map(el => ({ role: el.classList.contains("me") ? "user" : "assistant", text: el.textContent.trim() }));
+
   function leadCard(d) {
     if (leadDone) return; leadDone = true;
     const card = document.createElement("div");
     card.className = "lead";
     const top = document.createElement("div");
-    top.className = "lead-top"; top.textContent = "New lead texted to Loveall";
+    top.className = "lead-top"; top.textContent = "Sending your request…";
     const dl = document.createElement("dl");
     [["Name", d.name], ["Phone", d.phone], ["Location", d.location], ["Problem", d.issue], ["Urgency", d.urgency], ["Best time", d.bestTime]]
       .filter(([, v]) => v).forEach(([k, v]) => {
@@ -1066,9 +1083,17 @@ Only output LEAD_JSON once in the conversation.`;
         dl.append(dt, dd);
       });
     const p = document.createElement("p");
-    p.textContent = "Demo preview. In the live version this lands on the owner's phone by text and email within seconds, any time of day.";
+    p.textContent = "The Loveall team gets this right away and will call you back.";
     card.append(top, dl, p);
     log.append(card); scrollDown();
+    postLead({ source: "chat", name: d.name, phone: d.phone, location: d.location, issue: d.issue, urgency: d.urgency, bestTime: d.bestTime, transcript: chatTranscript() })
+      .then(() => { top.textContent = "Request sent to Loveall"; })
+      .catch(() => {
+        card.style.borderColor = "var(--copper-deep)"; top.style.color = "var(--copper-deep)";
+        top.textContent = "Your request didn't go through";
+        p.textContent = "Please call " + PHONE + " so we don't miss you.";
+        leadDone = false;
+      });
   }
 
   function openChat(seed) {
@@ -1200,12 +1225,22 @@ Only output LEAD_JSON once in the conversation.`;
     out.textContent = ok ? "Good news, you're in our service area." : "You may be outside our usual area. Call " + PHONE + " and we'll let you know.";
   });
 
-  $("#quote-form").addEventListener("submit", e => {
+  $("#quote-form").addEventListener("submit", async e => {
     e.preventDefault();
+    const qf = e.currentTarget, btn = qf.querySelector("button[type=submit]");
     const n = $("#q-name").value.trim(), p = $("#q-phone").value.trim(), msg = $("#form-msg");
     if (!n || p.replace(/\D/g, "").length < 10) { msg.style.color = "var(--copper-deep)"; msg.textContent = "Add your name and a 10-digit phone number so we can reach you."; return; }
-    msg.style.color = "var(--ok)";
-    msg.textContent = "Demo only: in the live site, Loveall gets this request instantly.";
+    if (btn.disabled) return;
+    btn.disabled = true; msg.style.color = "var(--muted)"; msg.textContent = "Sending…";
+    try {
+      await postLead({ source: "quote_form", name: n, phone: p, service: $("#q-service").value, issue: $("#q-msg").value.trim(), website: $("#q-website").value });
+      msg.style.color = "var(--ok)";
+      msg.textContent = "Thanks, " + n.split(/\s+/)[0] + ". Your request is in. The Loveall team will call you shortly.";
+      qf.reset();
+    } catch (_) {
+      msg.style.color = "var(--copper-deep)";
+      msg.textContent = "That didn't go through. Please try again, or call " + PHONE + ".";
+    } finally { btn.disabled = false; }
   });
 
   $("#copy-num").addEventListener("click", () => {

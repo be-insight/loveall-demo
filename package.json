@@ -1,0 +1,12 @@
+{
+  "name": "loveall-demo",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy",
+    "deploy:cleanup": "wrangler deploy --config workers/lead-cleanup/wrangler.toml"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}

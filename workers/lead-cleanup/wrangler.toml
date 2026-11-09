@@ -1,0 +1,16 @@
+name = "loveall-lead-cleanup"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+# Every day at 08:00 UTC (2-3am in Kansas City)
+[triggers]
+crons = ["0 8 * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "loveall-leads"
+database_id = "e87579d9-4741-403d-8c20-427257604704"
+
+[observability]
+enabled = true
