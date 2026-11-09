@@ -7,9 +7,12 @@
 <meta name="description" content="Locally owned Kansas City plumber. Drains, sewer lines, water heaters and everyday repairs, with the price confirmed before any work starts. Call (816) 200-3338.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0E1B33">
+<!-- Launch checklist: set canonical/og:url to the live domain, then change robots to "index, follow". -->
+<link rel="canonical" href="https://insight-demo.github.io/loveall-demo/">
 <meta property="og:title" content="Loveall Plumbing &amp; Rooter Guys">
 <meta property="og:description" content="Kansas City plumbing with the price confirmed before any work starts. Concept site by Insight.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://insight-demo.github.io/loveall-demo/">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23B45A28'/%3E%3Cpath d='M20 8c-4.6 6.2-8 10.6-8 15a8 8 0 0 0 16 0c0-4.4-3.4-8.8-8-15Z' fill='%23F3EEE5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,6 +55,8 @@ a { color: inherit; }
 :focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; border-radius: 6px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-left: var(--gl); padding-right: var(--gr); }
+.skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--copper); color: #fff; padding: 12px 16px; border-radius: 10px; font-weight: 600; text-decoration: none; transition: top .15s; }
+.skip:focus { top: calc(12px + env(safe-area-inset-top, 0px)); }
 
 h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; letter-spacing: -.025em; line-height: 1.06; text-wrap: balance; font-stretch: 94%; }
 .h1 { font-size: clamp(2.75rem, 6.2vw, 4.75rem); line-height: 1.02; letter-spacing: -.035em; font-stretch: 92%; }
@@ -332,9 +337,33 @@ form.quote { background: var(--white); border: 1px solid var(--line); border-rad
 @media (max-width: 900px) { .contact { grid-template-columns: minmax(0, 1fr); gap: 36px; } }
 @media (max-width: 480px) { .row2 { grid-template-columns: minmax(0, 1fr); } form.quote { padding: 22px; } }
 
-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .92rem; }
-footer .wrap { padding-block: 34px 96px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; }
-footer strong { color: var(--ink); font-weight: 600; }
+/* Consent line under the quote form, and the "fill" blanks Tim confirms before launch */
+.consent { font-size: .85rem; color: var(--muted); line-height: 1.45; }
+.consent a { color: var(--copper-deep); }
+.fill { background: var(--copper-tint); color: var(--copper-deep); border-bottom: 1.5px dashed var(--copper); padding: 0 .25em; border-radius: 3px; font-weight: 500; text-decoration: none; }
+
+/* Footer */
+.site-foot { border-top: 1px solid var(--line); background: var(--paper-2); color: var(--muted); font-size: .93rem; }
+.foot-grid { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 40px; padding-block: 56px 40px; }
+.foot-grid h2 { font: 600 .95rem var(--font); color: var(--ink); margin: 0 0 14px; letter-spacing: 0; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.foot-grid a { color: var(--ink); text-decoration: none; }
+.foot-grid a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.foot-brand .brand { color: var(--ink); }
+.foot-brand .brand-name small { color: var(--muted); }
+.foot-brand address { font-style: normal; margin-top: 16px; line-height: 1.7; }
+.foot-brand .entity { margin-top: 12px; max-width: 42ch; }
+.foot-bottom { border-top: 1px solid var(--line); padding-block: 22px 96px; display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center; justify-content: space-between; font-size: .86rem; }
+.foot-legal { display: flex; gap: 18px; flex-wrap: wrap; }
+.foot-legal a, .foot-bottom a { color: var(--ink); text-decoration: none; }
+.foot-legal a:hover, .foot-bottom a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.foot-bottom .ai { display: inline-flex; align-items: center; gap: 8px; }
+.foot-bottom .ai i { width: 8px; height: 8px; border-radius: 50%; background: var(--copper); display: inline-block; }
+@media (max-width: 760px) {
+  .foot-grid { grid-template-columns: 1fr; gap: 32px; padding-block: 44px 32px; }
+  .foot-brand .brand-name small { display: block; }
+  .foot-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
 
 /* Mobile action bar */
 .mbar { display: none; }
@@ -342,7 +371,7 @@ footer strong { color: var(--ink); font-weight: 600; }
   .mbar { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 10px var(--gr) calc(10px + env(safe-area-inset-bottom, 0px)) var(--gl); background: rgba(244,242,238,.94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid var(--line); transform: translateY(110%); transition: transform .45s var(--ease); }
   .mbar.show { transform: none; }
   .mbar .btn { padding: 15px 12px; }
-  footer .wrap { padding-bottom: 124px; }
+  .foot-bottom { padding-bottom: 130px; }
 }
 
 /* Chat */
@@ -384,6 +413,7 @@ footer strong { color: var(--ink); font-weight: 600; }
 .chat-form button { background: var(--copper); color: #fff; border: 0; border-radius: 12px; padding: 0 16px; font: 600 .95rem var(--font); cursor: pointer; }
 .chat-form button:disabled { opacity: .5; cursor: default; }
 .chat-note { font-size: .75rem; color: var(--muted); text-align: center; padding: 0 12px 10px; background: var(--white); }
+.chat-note a { color: var(--copper-deep); }
 @media (max-width: 760px) { .chat-fab { display: none; } }
 @media (max-width: 520px) { .chat { inset: 0; width: auto; height: auto; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); } }
 
@@ -418,6 +448,7 @@ footer strong { color: var(--ink); font-weight: 600; }
 </style>
 </head>
 <body>
+<a class="skip" href="#top">Skip to content</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -557,11 +588,11 @@ footer strong { color: var(--ink); font-weight: 600; }
       <div class="rev-sum" data-reveal>
         <div class="big" aria-hidden="true">17</div>
         <div class="stars" aria-hidden="true">★★★★★</div>
-        <h2 id="rev-title">Seventeen Google reviews. Seventeen five stars.</h2>
-        <p class="lede">Straight from Loveall's Google profile. Once the site is live, new five-star reviews show up here on their own.</p>
+        <h2 id="rev-title">Seventeen five-star reviews on Google.</h2>
+        <p class="lede">Here are a few of them, word for word. <a href="https://www.google.com/search?q=Loveall+Plumbing+%26+Rooter+Guys+Kansas+City+reviews" rel="noopener">Read every review on Google</a>.</p>
         <a class="btn btn-copper" href="tel:+18162003338">Call (816) 200-3338</a>
       </div>
-      <div class="rev-list" aria-label="Google reviews">
+      <div class="rev-list" aria-label="A selection of Google reviews">
         <article class="rev" data-reveal><span class="stars rev-stars" aria-label="5 out of 5 stars">★★★★★</span><q>Tim is a great honest guy and had an amazing attitude, would definitely recommend!</q><div class="who"><span class="av" aria-hidden="true">J</span><span><b>John H.</b><small>Google review, 3 months ago</small></span></div></article>
         <article class="rev" data-reveal style="--d:.08s"><span class="stars rev-stars" aria-label="5 out of 5 stars">★★★★★</span><q>Tim was very accommodating to fit our time schedule. He was honest with what we needed. He put in a new faucet in the kitchen. Looks beautiful and runs great. I would highly recommend Loveall Plumbing for your next job.</q><div class="who"><span class="av" aria-hidden="true">R</span><span><b>Ryan F.</b><small>Google review, 1 year ago</small></span></div></article>
         <article class="rev" data-reveal style="--d:.16s"><span class="stars rev-stars" aria-label="5 out of 5 stars">★★★★★</span><q>This is the 2nd time I've had Loveall Plumbing come to my house to fix a blockage. I have an old farm house with old pipes and roots. He was beyond helpful and kind both times. He came the very next day, was honest with me about everything and fixed the issue very quickly.</q><div class="who"><span class="av" aria-hidden="true">A</span><span><b>Ashley B.</b><small>Google review, 9 months ago</small></span></div></article>
@@ -803,17 +834,58 @@ footer strong { color: var(--ink); font-weight: 600; }
           </select>
         </div>
         <div class="field"><label for="q-msg">What's going on?</label><textarea id="q-msg" placeholder="Describe the problem, and where it is in the house"></textarea></div>
-        <button class="btn btn-copper" type="submit">Request my quote</button>
+        <p class="consent" id="consent">By sending this, you agree that Loveall Plumbing may call or text you at this number about your request. Consent isn't a condition of buying anything. Message and data rates may apply; reply STOP to end texts. See our <a href="privacy.html">Privacy Policy</a>.</p>
+        <button class="btn btn-copper" type="submit" aria-describedby="consent">Request my quote</button>
         <p class="form-msg" id="form-msg" aria-live="polite"></p>
       </form>
     </div>
   </section>
 </main>
 
-<footer>
+<footer class="site-foot">
   <div class="wrap">
-    <span><strong>Loveall Plumbing &amp; Rooter Guys</strong>, Kansas City and surrounding areas. <a href="tel:+18162003338">(816) 200-3338</a></span>
-    <span>Concept design by Insight</span>
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="Back to top">
+          <svg class="brand-mark" aria-hidden="true"><use href="#mark"/></svg>
+          <span class="brand-name">Loveall Plumbing<small>&amp; Rooter Guys</small></span>
+        </a>
+        <p class="entity"><span class="fill" data-fill="ENTITY_NAME" title="To be confirmed before launch">legal entity name</span>, <span class="fill" data-fill="ENTITY_TYPE_LINE" title="To be confirmed before launch">entity type, e.g. a Missouri limited liability company</span>.</p>
+        <address>
+          <span class="fill" data-fill="ADDRESS" title="To be confirmed before launch">business address</span><br>
+          <a href="tel:+18162003338">(816) 200-3338</a><br>
+          <a href="mailto:{{EMAIL}}" class="fill" data-fill="EMAIL" title="To be confirmed before launch">business email</a><br>
+          <span class="fill" data-fill="HOURS" title="To be confirmed before launch">business hours</span>
+        </address>
+      </div>
+      <nav aria-label="Site">
+        <h2>On this site</h2>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#emergency">Emergency help</a></li>
+          <li><a href="#area">Service area</a></li>
+          <li><a href="#contact">Free quote</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Licensed &amp; insured</h2>
+        <ul>
+          <li><span class="fill" data-fill="LICENSE_LINE" title="To be confirmed before launch">City of Kansas City, MO plumbing contractor license no.</span></li>
+          <li>Serving Kansas City, Independence, Raytown, Oak Grove and neighboring cities in Missouri.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 <span class="fill" data-fill="ENTITY_NAME" title="To be confirmed before launch">legal entity name</span>. All rights reserved.</p>
+      <nav class="foot-legal" aria-label="Legal">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
+        <a href="accessibility.html">Accessibility</a>
+      </nav>
+      <p class="ai"><i aria-hidden="true"></i>The chat on this site is an AI assistant.</p>
+      <p>Website by <a href="https://beinsight.co" rel="noopener">Insight</a></p>
+    </div>
   </div>
 </footer>
 
@@ -838,7 +910,7 @@ footer strong { color: var(--ink); font-weight: 600; }
     <input id="chat-in" autocomplete="off" placeholder="Type your message">
     <button type="submit" id="chat-send">Send</button>
   </form>
-  <p class="chat-note">Demo: leads go to a preview card, not to a real phone.</p>
+  <p class="chat-note">Demo: leads go to a preview card, not to a real phone. <a href="privacy.html#chat">How the chat handles your info</a></p>
 </div>
 
 <script>
@@ -932,7 +1004,8 @@ Rules:
 - Sewage coming up in the home: tell them to stop using water and call ${PHONE}.
 - Gas smell: tell them to leave the house and call the gas utility or 911 from outside. Do not troubleshoot gas.
 - You may suggest one simple safe check (e.g., is the water heater breaker or pilot on), but never diagnose with certainty and never coach a repair that needs a licensed plumber.
-- If asked, say plainly you're an AI assistant for Loveall, not a person.
+- If anyone asks whether they're talking to a person or a bot, or seems to think you're human, say clearly that you're an automated AI assistant for Loveall, not a person, and that they can reach a person at ${PHONE}.
+- Never ask for card numbers, Social Security numbers or health details. If someone offers them, say you don't need them.
 - Don't invent facts about the company beyond the above. If unsure, offer a callback.
 - Stay on plumbing and this company. Politely decline unrelated requests.
 
@@ -1002,7 +1075,7 @@ Only output LEAD_JSON once in the conversation.`;
     chat.hidden = false; fab.hidden = true;
     if (!started) {
       started = true;
-      bubble("Hi, I'm Loveall Plumbing's assistant. What's going on with your plumbing today?", "bot");
+      bubble("Hi! I'm Loveall Plumbing's AI assistant, not a person. I can take your details and have the team call you back. If it's an emergency, call (816) 200-3338 now. What's going on with your plumbing?", "bot");
       if (!seed) chips(["My drain is clogged", "I have no hot water", "I have a leak", "Sewer is backing up", "I want a quote"]);
     }
     if (seed) { clearChips(); userSays(seed); }

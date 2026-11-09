@@ -1,0 +1,13 @@
+{
+  "ENTITY_NAME": "Loveall Plumbing & Rooter Guys LLC",
+  "ENTITY_TYPE_LINE": "a Missouri limited liability company",
+  "ADDRESS": "Kansas City, MO 641xx",
+  "EMAIL": "tim@example.com",
+  "PRIVACY_EMAIL": "tim@example.com",
+  "HOURS": "Mon–Fri 7am–6pm. Emergency calls answered 24/7.",
+  "LICENSE_LINE": "City of Kansas City, MO plumbing contractor license #000000",
+  "INSIGHT_LEGAL_NAME": "Insight LLC",
+  "INSIGHT_EMAIL": "admin@beinsight.co",
+  "RETENTION_MONTHS": "24",
+  "EFFECTIVE_DATE": "January 1, 2027"
+}
